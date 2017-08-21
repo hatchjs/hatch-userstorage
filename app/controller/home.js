@@ -2,8 +2,10 @@
 
 module.exports = app => {
   class HomeController extends app.Controller {
-    * index() {
-      this.ctx.body = 'hi, egg';
+
+    async helloWorld() {
+      this.ctx.body = 'hi, abos';
+      return;
     }
   }
   return HomeController;
