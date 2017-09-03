@@ -21,21 +21,49 @@ describe('test/account.test.js', () => {
 
   // 用户注册
   it('register', async function() {
-    let ac = await acManager.get('blog');
+    const appKey = 'blog';
+    let ac = await acManager.get(appKey);
     if (!ac) {
-      ac = await acManager.createAccountCenter(config.clients.blog);
+      ac = await acManager.createAccountCenter(config.clients[appKey]);
     }
     // assert(ac);
+    {
+      const user = {
+        passby: 'abosfreeman',
+        password: 'factory',
+        provider: appKey,
+      };
+      const account = await ac.factory(user);
+      const res = await account.register();
+      assert(res === true || res.name === app.err.Registered.name);
+    }
+    {
+      const user = {
+        passby: [ 'date', 'now', Date.now().toString() ].join('_'),
+        password: 'factory',
+        provider: appKey,
+      };
+      const account = await ac.factory(user);
+      const res = await account.register();
+      assert(res);
+      assert(account.identity);
+    }
+  });
+
+  // 通过输入密码登录。
+  it('login/passby', async function() {
+    const appKey = 'blog';
+    let ac = await acManager.get(appKey);
+    if (!ac) {
+      ac = await acManager.createAccountCenter(config.clients[appKey]);
+    }
     const user = {
-      username: 'hi',
+      passby: 'abosfreeman',
       password: 'factory',
+      provider: appKey,
     };
-    const account = ac.factory(user);
-    console.trace(account);
-    const res = await account.register();
-    assert(res);
-    assert(account.ID);
-    assert(account.OPEN_ID);
+    const account = await ac.factory(user);
+    assert(account.isRegistered);
   });
 
   // 通过认证登录， 需要有第三方应用的openid

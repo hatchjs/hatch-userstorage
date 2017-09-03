@@ -33,10 +33,6 @@ exports.mysql = {
 
 exports.hatchUserStorage = {
   passwordCharset,
-  db: {
-    tableAC: 'account_center',
-    tableTB: 'account_center_tb',
-  },
     // Multi Service Register
   clients: {
     blog: {
@@ -45,12 +41,13 @@ exports.hatchUserStorage = {
       describe: 'super awesome',
       prefixDatabase: 'blog_account_',
       prefixTable: 'tb_account_',
-      counterDatabase: 8,
-      counterTable: 8,
+      counterDatabase: 1,
+      counterTable: 1,
       configDBHost: 'mysql.i.abos.space',
       configDBPort: 3306,
       configDBUser: 'blogaccount',
       configDBPassword: '6BMgreIgj3XfrpJ7LVpLrW0hFcbRSnU4',
+      generalSalt: 'blogsuperawesomeabos',
     },
     blogtest: {
       appKey: 'blogtest',
@@ -64,6 +61,7 @@ exports.hatchUserStorage = {
       configDBPort: 3306,
       configDBUser: 'blogaccount',
       configDBPassword: '6BMgreIgj3XfrpJ7LVpLrW0hFcbRSnU4',
+      generalSalt: 'blogtestsuperawesomeabos',
     },
     game: {
       appKey: 'host',

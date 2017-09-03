@@ -31,9 +31,9 @@ describe('test/account-center.test.js', () => {
         const query = `drop database if exists ${item.dbName} `;
         yield db.query(query);
       });
+      yield db.query(`delete from \`${acManager.config.db.tableTB}\` where \`APP_KEY\`=  '${ac.appKey}' `);
+      yield db.query(`delete from \`${acManager.config.db.tableAC}\` where \`APP_KEY\`=  '${ac.appKey}' `);
     }
-    yield db.query(`truncate table \`${acManager.config.db.tableTB}\` `);
-    yield db.query(`truncate table \`${acManager.config.db.tableAC}\` `);
   });
 
   afterEach(mm.restore);
