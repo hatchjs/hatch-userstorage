@@ -62,7 +62,7 @@ describe('test/account-center.test.js', () => {
     const firstCreate = await acManager.createAccountCenter(preparedBlogAccountConfig);
     assert(firstCreate);
 
-    // try create a exists account center
+    // try create an exists account center
     try {
       await acManager.createAccountCenter(preparedBlogAccountConfig);
       assert(false, 'duplicate should throw error');

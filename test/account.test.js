@@ -27,27 +27,29 @@ describe('test/account.test.js', () => {
       ac = await acManager.createAccountCenter(config.clients[appKey]);
     }
     // assert(ac);
-    {
+    try {
       const user = {
         passby: 'abosfreeman',
+        nickname: 'realfreeman',
+        avatar: 'http://abos.space/foo.png',
         password: 'factory',
         provider: appKey,
       };
       const account = await ac.factory(user);
       const res = await account.register();
-      assert(res === true || res.name === app.err.Registered.name);
+      assert(res === true);
+    } catch (err) {
+      assert(err.name === app.err.AccountDuplicated.name);
     }
-    {
-      const user = {
-        passby: [ 'date', 'now', Date.now().toString() ].join('_'),
-        password: 'factory',
-        provider: appKey,
-      };
-      const account = await ac.factory(user);
-      const res = await account.register();
-      assert(res);
-      assert(account.identity);
-    }
+    const user = {
+      passby: [ 'date', 'now', Date.now().toString() ].join('_'),
+      password: 'factory',
+      provider: appKey,
+    };
+    const account = await ac.factory(user);
+    const res = await account.register();
+    assert(res);
+    assert(account.identity);
   });
 
   // 通过输入密码登录。
@@ -63,7 +65,19 @@ describe('test/account.test.js', () => {
       provider: appKey,
     };
     const account = await ac.factory(user);
-    assert(account.isRegistered);
+    assert(!account.isLogined);
+    let fullDetail;
+    try {
+      fullDetail = await account.fullDetail();
+    } catch (err) {
+      assert(err.name === app.err.AccountEmptyIdentity.name);
+    }
+    const login = await account.setIdentityByPassword();
+    assert(login === true);
+    // await account.initIdentiy
+    fullDetail = await account.fullDetail();
+    assert(fullDetail.nickname === 'realfreeman');
+    assert(fullDetail.ticket);
   });
 
   // 通过认证登录， 需要有第三方应用的openid

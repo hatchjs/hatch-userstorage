@@ -18,3 +18,10 @@ exports.redis = {
   enabled: true,
   package: 'egg-redis',
 };
+
+exports.hatchRediskey = {
+  enable: true,
+  package: 'hatch-rediskey',
+  path: path.join(__dirname, '../../hatch-rediskey'),
+};
+

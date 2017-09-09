@@ -3,9 +3,6 @@
 module.exports = app => {
   class InternalController extends app.Controller {
 
-    async helloWorld() {
-      this.ctx.body = 'hi, abos';
-    }
     async loginByPassword() {
       this.ctx.body = 'hi, egg';
     }
