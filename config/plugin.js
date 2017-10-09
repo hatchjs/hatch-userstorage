@@ -3,12 +3,6 @@ const path = require('path');
 // had enabled by egg
 // exports.static = true;
 
-exports.hatchErrors = {
-  enabled: true,
-  path: path.join(__dirname, '..', '..', 'hatch-errors'),
-  package: 'hatch-errors',
-};
-
 exports.mysql = {
   enabled: true,
   package: 'egg-mysql',
@@ -23,5 +17,11 @@ exports.hatchRediskey = {
   enable: true,
   package: 'hatch-rediskey',
   path: path.join(__dirname, '../../hatch-rediskey'),
+};
+
+exports.hatchErrors = {
+  enabled: true,
+  path: path.join(__dirname, '..', '..', 'hatch-errors'),
+  package: 'hatch-errors',
 };
 

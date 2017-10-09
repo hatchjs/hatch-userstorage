@@ -156,20 +156,6 @@ describe('test/account.test.js', () => {
     }
   });
 
-  it('trigger AccountInvalidIdentity on dbDetail', async function() {
-    try {
-      const account = await ac.forceFactory({
-        passby: 'bbosfreeman',
-        password: 'factory',
-        provider: ac.appKey,
-      });
-      account.identity = 'xxx';
-      await account.dbDetail();
-    } catch (error) {
-      assert(error.name === app.err.AccountInvalidIdentity.name);
-    }
-  });
-
   // 通过认证登录， 需要有第三方应用的openid
   it('login/oauth', function* () {
     //
