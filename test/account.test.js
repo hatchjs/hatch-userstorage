@@ -1,3 +1,4 @@
+
 'use strict';
 
 const mm = require('egg-mock');
@@ -41,7 +42,7 @@ describe('test/account.test.js', () => {
       const res = await account.register();
       assert(res === true);
     } catch (err) {
-      assert(err.name === app.err.AccountDuplicated.name);
+      assert(err.name === app.err.AccountRegistered.name);
     }
     const user = {
       passby: [ 'date', 'now', Date.now().toString() ].join('_'),
@@ -52,6 +53,11 @@ describe('test/account.test.js', () => {
     const res = await account.register();
     assert(res);
     assert(account.identity);
+    try {
+      await account.register();
+    } catch (error) {
+      assert(error.name === app.err.AccountIdentityExists.name);
+    }
   });
 
   // 通过输入密码登录。
@@ -68,6 +74,11 @@ describe('test/account.test.js', () => {
     };
     const account = await ac.factory(user);
     assert(!account.isLogined);
+    try {
+      await account.setTicketByIdentity();
+    } catch (error) {
+      assert(error.name === app.err.AccountEmptyIdentity.name);
+    }
     let fullDetail;
     try {
       fullDetail = await account.fullDetail();
@@ -86,6 +97,27 @@ describe('test/account.test.js', () => {
       await account.fullDetail();
     } catch (error) {
       throw error;
+    }
+    try {
+      await account.setIdentityByPassword();
+    } catch (error) {
+      assert(error.name === app.err.AccountIdentityExists.name);
+    }
+
+    try {
+      await account.setTicketByIdentity();
+    } catch (error) {
+      assert(error.name === app.err.AccountTicketExists.name);
+    }
+  });
+
+    // 通过输入密码登录。
+  it('login failed by invalid ticket', async function() {
+    try {
+      const account = await ac.factory({ passby: 'abosfreeman', provider: ac.appKey }, 'xxx');
+      await account.setIdentityByTicket();
+    } catch (error) {
+      assert(error.name === app.err.AccountInvalidTicket.name);
     }
   });
 
@@ -115,20 +147,6 @@ describe('test/account.test.js', () => {
     }
   });
 
-  it('trigger AccountIdentityExists on password', async function() {
-    try {
-      const account = await ac.forceFactory({
-        passby: 'abosfreeman',
-        password: 'factory',
-        provider: ac.appKey,
-      });
-      account.identity = 'xxx';
-      await account.setIdentityByPassword();
-    } catch (error) {
-      assert(error.name === app.err.AccountIdentityExists.name);
-    }
-  });
-
   it('trigger account identitiy exits', async function() {
     try {
       const account = await ac.forceFactory({
@@ -136,10 +154,10 @@ describe('test/account.test.js', () => {
         password: 'factory',
         provider: ac.appKey,
       });
-      account.identity = 'xxx';
+      // account.identity = 'xxx';
       await account.register();
     } catch (error) {
-      assert(error.name === app.err.AccountIdentityExists.name);
+      assert(error.name === app.err.AccountRegistered.name);
     }
   });
 

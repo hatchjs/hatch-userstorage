@@ -23,9 +23,53 @@ exports.mysql = {
       // 用户名
       user: 'root',
       // 密码
-      password: '',
+      password: 'awesome',
       // 数据库名
-      database: 'huodong',
+      database: 'hatch_usercenter',
+      // 以下三个表应该放在用户帐号库， 而不是管理中心的库
+      /*
+      CREATE TABLE `account_center` (
+        `ID` int(11) NOT NULL AUTO_INCREMENT,
+        `APP_KEY` varchar(20) NOT NULL,
+        `PASSWORD` varchar(32) NOT NULL,
+        `PASSWORD_SALT` varchar(32) NOT NULL,
+        `CREATE_DATETIME` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        `DESCRIBE` varchar(128) NOT NULL,
+        `COUNTER_DATABASE` tinyint(3) unsigned NOT NULL,
+        `COUNTER_TABLE` tinyint(3) unsigned NOT NULL,
+        PRIMARY KEY (`ID`),
+        UNIQUE KEY `APP_KEY_UNIQUE` (`APP_KEY`)
+      ) ENGINE=InnoDB
+      */
+      /*
+      CREATE TABLE `account_center_tb` (
+        `ID` int(11) NOT NULL AUTO_INCREMENT,
+        `APP_KEY` varchar(64) NOT NULL,
+        `DB_NAME` varchar(45) NOT NULL COMMENT '数据库名称',
+        `TB_NAME` varchar(45) NOT NULL COMMENT '表名称',
+        `DB_HOST` varchar(45) NOT NULL,
+        `DB_PORT` varchar(45) NOT NULL,
+        `DB_PASSWORD` varchar(45) NOT NULL,
+        `DB_USER` varchar(45) NOT NULL,
+        PRIMARY KEY (`ID`),
+        UNIQUE KEY `I_UNIQUE_DB_TB` (`DB_HOST`,`DB_PORT`,`DB_NAME`,`TB_NAME`)
+      ) ENGINE=InnoDB
+      */
+      /*
+      CREATE TABLE `account_center_map` (
+        `IDENTITY` char(92) NOT NULL DEFAULT '',
+        `ITEM` char(64) NOT NULL,
+        `APP_KEY` char(20) NOT NULL,
+        PRIMARY KEY (`APP_KEY`,`ITEM`),
+        KEY `I_IDENTITY` (`IDENTITY`) USING BTREE
+      ) ENGINE=InnoDB
+      */
+      /*
+      CREATE TABLE `account_center_hash` (
+        `TOKEN` char(92) NOT NULL,
+        PRIMARY KEY (`TOKEN`)
+      ) ENGINE=InnoDB
+      */
     },
   },
 };

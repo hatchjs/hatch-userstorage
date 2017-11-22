@@ -54,7 +54,7 @@ describe('test/account-center.test.js', () => {
     try {
       emptyAccount = await acManager.get(appKey);
     } catch (e) {
-      assert(e.code === 'ERR_ASSERTION');
+      assert(e.code === 'ERR_ASSERTION' || e.code === 'ER_NO_SUCH_TABLE');
     }
     assert(!emptyAccount, 'should not be created yet');
 
